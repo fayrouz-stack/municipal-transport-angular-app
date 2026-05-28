@@ -1,0 +1,58 @@
+<h2 class="mb-3">Modifier ticket</h2>
+
+<form #form="ngForm" (ngSubmit)="update(form)" novalidate>
+
+  <div class="mb-3">
+    <label>Numéro</label>
+    <input class="form-control" name="numero" [ngModel]="ticket.numero" disabled />
+  </div>
+
+  <div class="mb-3">
+    <label>ID Voyage *</label>
+    <input class="form-control" type="number" name="voyageId" [(ngModel)]="ticket.voyageId" required min="1" />
+  </div>
+
+  <div class="mb-3">
+    <label>Passager *</label>
+    <input class="form-control" name="passagerNom" [(ngModel)]="ticket.passagerNom" required />
+  </div>
+
+  <div class="mb-3">
+    <label>Email</label>
+    <input class="form-control" type="email" name="passagerEmail" [(ngModel)]="ticket.passagerEmail" />
+  </div>
+
+  <div class="mb-3">
+    <label>Nombre de billets *</label>
+    <input class="form-control" type="number" name="nombreBillets" [(ngModel)]="ticket.nombreBillets" required min="1" />
+  </div>
+
+  <div class="mb-3">
+    <label>Montant total (DT) *</label>
+    <input class="form-control" type="number" step="0.01" name="montantTotal" [(ngModel)]="ticket.montantTotal" required min="0" />
+  </div>
+
+  <div class="mb-3">
+    <label>Méthode de paiement *</label>
+    <select class="form-control" name="methodePaiement" [(ngModel)]="ticket.methodePaiement" required>
+      <option value="Espèces">Espèces</option>
+      <option value="Carte">Carte bancaire</option>
+      <option value="Stripe">Stripe</option>
+      <option value="PayPal">PayPal</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Statut</label>
+    <select class="form-control" name="statut" [(ngModel)]="ticket.statut">
+      <option value="PAYE">Payé</option>
+      <option value="EN_ATTENTE">En attente</option>
+      <option value="ANNULE">Annulé</option>
+    </select>
+  </div>
+
+  <button class="btn btn-success w-100" type="submit" [disabled]="loading">
+    <span *ngIf="loading">Updating...</span>
+    <span *ngIf="!loading">Mettre à jour</span>
+  </button>
+</form>

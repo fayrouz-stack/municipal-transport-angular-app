@@ -1,0 +1,98 @@
+<c-card class="mb-4">
+  <c-card-header>
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Gestion des tickets</h5>
+      <button cButton color="primary" routerLink="/tickets/add">
+        Ajouter un ticket
+      </button>
+    </div>
+  </c-card-header>
+
+  <c-card-body>
+    <div class="row mb-4 g-3">
+      <div class="col-md-5">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Rechercher par numéro, passager, email..."
+          [(ngModel)]="searchTerm"
+          (input)="applyFilters()" />
+      </div>
+      <div class="col-md-3">
+        <select class="form-control" [(ngModel)]="filterStatut" (change)="applyFilters()">
+          <option value="">Tous les statuts</option>
+          <option value="PAYE">Payé</option>
+          <option value="EN_ATTENTE">En attente</option>
+          <option value="ANNULE">Annulé</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button cButton color="secondary" (click)="resetFilters()">Réinitialiser</button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+          <th>Numéro</th>
+          <th>Voyage</th>
+          <th>Passager</th>
+          <th>Email</th>
+          <th>Nb billets</th>
+          <th>Montant (DT)</th>
+          <th>Méthode</th>
+          <th>Statut</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          @if (loading) {
+            <tr>
+              <td colspan="10" class="text-center">
+                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                Chargement...
+              </td>
+            </tr>
+          } @else {
+            @for (t of paginatedTickets; track t.id) {
+              <tr>
+                <td><strong>{{ t.numero }}</strong></td>
+                <td>#{{ t.voyageId }}</td>
+                <td>{{ t.passagerNom }}</td>
+                <td>{{ t.passagerEmail || '-' }}</td>
+                <td>{{ t.nombreBillets }}</td>
+                <td>{{ t.montantTotal | number:'1.2-2' }}</td>
+                <td>{{ t.methodePaiement }}</td>
+                <td>
+                  <c-badge [color]="statutBadgeColor(t.statut)">{{ t.statut }}</c-badge>
+                </td>
+                <td>{{ t.dateCreation | date:'short' }}</td>
+                <td>
+                  <button class="btn btn-sm btn-info me-1" [routerLink]="['/tickets', t.id]">Détails</button>
+                  <button class="btn btn-sm btn-warning me-1" [routerLink]="['/tickets/edit', t.id]">Modifier</button>
+                  <button class="btn btn-sm btn-danger" (click)="deleteTicket(t.id!)">Supprimer</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="10" class="text-center text-muted">Aucun ticket trouvé</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (totalPages > 1) {
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <small>Page {{ currentPage }} / {{ totalPages }} — {{ totalItems }} ticket(s)</small>
+        <div>
+          <button cButton color="secondary" class="me-2" [disabled]="currentPage === 1" (click)="previousPage()">Précédent</button>
+          <button cButton color="secondary" [disabled]="currentPage === totalPages" (click)="nextPage()">Suivant</button>
+        </div>
+      </div>
+    }
+  </c-card-body>
+</c-card>

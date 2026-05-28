@@ -1,0 +1,105 @@
+<h2 class="mb-3">Modifier Chauffeur</h2>
+
+<form #form="ngForm" (ngSubmit)="update(form)" novalidate>
+
+  <div class="mb-3">
+    <label>CIN *</label>
+    <input class="form-control"
+           name="cin"
+           [(ngModel)]="chauffeur.cin"
+           required
+           pattern="^[012][0-9]{7}$">
+
+    <small class="text-danger"
+           *ngIf="form.submitted && form.controls['cin']?.invalid">
+      CIN invalide (8 chiffres, commence par 0/1/2)
+    </small>
+  </div>
+
+  <div class="mb-3">
+    <label>Nom *</label>
+    <input class="form-control"
+           name="nom"
+           [(ngModel)]="chauffeur.nom"
+           required
+           pattern="^[A-Za-zÀ-ÿ\\s]+$">
+
+    <small class="text-danger"
+           *ngIf="form.submitted && form.controls['nom']?.invalid">
+      Des lettres seulement
+    </small>
+  </div>
+
+  <div class="mb-3">
+    <label>Prénom *</label>
+    <input class="form-control"
+           name="prenom"
+           [(ngModel)]="chauffeur.prenom"
+           required
+           pattern="^[A-Za-zÀ-ÿ\\s]+$">
+    <small class="text-danger"
+           *ngIf="form.submitted && form.controls['prenom']?.invalid">
+      Des lettres seulement
+    </small>
+  </div>
+
+  <div class="mb-3">
+    <label>Permis</label>
+    <select class="form-control"
+            name="permis"
+            [(ngModel)]="chauffeur.permis">
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Téléphone</label>
+    <input class="form-control"
+           name="telephone"
+           [(ngModel)]="chauffeur.telephone"
+           required
+           pattern="^[2459][0-9]{7}$">
+
+    <small class="text-danger"
+           *ngIf="form.submitted && form.controls['telephone']?.invalid">
+      8 chiffres requis
+    </small>
+  </div>
+
+  <div class="mb-3">
+    <label>Email</label>
+    <input class="form-control"
+           name="email"
+           [(ngModel)]="chauffeur.email"
+    required>
+
+    <small class="text-danger"
+           *ngIf="form.submitted && form.controls['email']?.invalid">
+      Email invalide
+    </small>
+  </div>
+
+  <!-- READ ONLY FIELDS -->
+  <div class="mb-3">
+    <label>Matricule</label>
+    <input class="form-control"
+           [(ngModel)]="chauffeur.matricule"
+           name="matricule"
+           disabled>
+  </div>
+
+
+
+  <button class="btn btn-success w-100"
+          type="submit"
+          [disabled]="loading">
+
+    <span *ngIf="loading">Updating...</span>
+    <span *ngIf="!loading">Update</span>
+
+  </button>
+
+</form>

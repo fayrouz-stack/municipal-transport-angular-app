@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Gestion des voyages</h2>
+    <button class="btn btn-primary" routerLink="/voyages/add">➕ Nouveau voyage</button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>ID</th><th>Destination</th><th>Date</th><th>Places</th><th>Prix</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let v of voyages">
+          <td>{{ v.id }}</td>
+          <td>{{ v.ligne.destination || 'N/A' }}</td>
+          <td>{{ v.dateVoyage | date:'dd/MM/yyyy' }}</td>
+          <td>{{ v.nombrePlacesDisponible }}</td>
+          <td>{{ v.prix }} DT</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-1" (click)="edit(v.id)">✏️</button>
+            <button class="btn btn-sm btn-danger me-1" (click)="delete(v.id)">🗑️</button>
+            <button class="btn btn-sm btn-success" (click)="goToPayment(v.id)">💳</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

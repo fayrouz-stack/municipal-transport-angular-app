@@ -1,0 +1,70 @@
+<h2 class="mb-3">{{ isEdit ? 'Modifier' : 'Créer' }} une affectation</h2>
+
+<div *ngIf="errorMsg" class="alert alert-danger">
+  <strong>Erreur :</strong> {{ errorMsg }}
+</div>
+
+<form #form="ngForm" (ngSubmit)="save(form)" novalidate>
+
+  <div class="mb-3">
+    <label>Chauffeur *</label>
+    <select class="form-control" name="chauffeurId" [(ngModel)]="affectation.chauffeurId" required>
+      <option [ngValue]="0" disabled>-- Sélectionner --</option>
+      <option *ngFor="let c of chauffeurs" [ngValue]="c.id">
+        {{ c.prenom }} {{ c.nom }} ({{ c.matricule }})
+      </option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Véhicule *</label>
+    <select class="form-control" name="vehiculeId" [(ngModel)]="affectation.vehiculeId" required>
+      <option [ngValue]="0" disabled>-- Sélectionner --</option>
+      <option *ngFor="let v of vehicules" [ngValue]="v.id">
+        {{ v.marque }} {{ v.modele }} ({{ v.matriculeFourni }})
+        <span *ngIf="!v.vehiculeDispo"> — INDISPONIBLE</span>
+      </option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Ligne *</label>
+    <select class="form-control" name="ligneId" [(ngModel)]="affectation.ligneId" required>
+      <option [ngValue]="0" disabled>-- Sélectionner --</option>
+      <option *ngFor="let l of lignes" [ngValue]="l.id">
+        {{ l.nom || l.code || ('Ligne ' + l.id) }}
+      </option>
+    </select>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label>Date début *</label>
+      <input class="form-control" type="datetime-local" name="dateDebut" [(ngModel)]="affectation.dateDebut" required />
+    </div>
+    <div class="col-md-6 mb-3">
+      <label>Date fin *</label>
+      <input class="form-control" type="datetime-local" name="dateFin" [(ngModel)]="affectation.dateFin" required />
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label>Statut</label>
+    <select class="form-control" name="statut" [(ngModel)]="affectation.statut">
+      <option value="PLANIFIEE">Planifiée</option>
+      <option value="EN_COURS">En cours</option>
+      <option value="TERMINEE">Terminée</option>
+      <option value="ANNULEE">Annulée</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Remarque</label>
+    <textarea class="form-control" name="remarque" [(ngModel)]="affectation.remarque" rows="2"></textarea>
+  </div>
+
+  <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
+    <span *ngIf="loading">Sauvegarde...</span>
+    <span *ngIf="!loading">{{ isEdit ? 'Mettre à jour' : 'Créer l\'affectation' }}</span>
+  </button>
+</form>

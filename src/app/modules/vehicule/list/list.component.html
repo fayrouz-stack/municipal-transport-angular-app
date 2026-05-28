@@ -1,0 +1,107 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Gestion des véhicules</h5>
+      <button class="btn btn-primary" routerLink="/vehicules/add">
+        Ajouter un véhicule
+      </button>
+    </div>
+  </div>
+  
+  <div class="card-body">
+    <!-- Filtres -->
+    <div class="row mb-4 g-3">
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Rechercher..." [(ngModel)]="searchTerm" (input)="onSearch()" />
+      </div>
+      <div class="col-md-4">
+        <select class="form-select" [(ngModel)]="etatFilter" (change)="onEtatChange()">
+          <option value="">Tous les états</option>
+          <option value="disponible">Disponible</option>
+          <option value="en service">En service</option>
+          <option value="en panne">En panne</option>
+          <option value="bon état">Bon état</option>
+          <option value="neuf">Neuf</option>
+          <option value="usé">Usé</option>
+          <option value="en réparation">En réparation</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-secondary" (click)="resetFilters()">Réinitialiser</button>
+      </div>
+    </div>
+
+    <!-- Tableau -->
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Matricule</th>
+            <th>Marque / Modèle</th>
+            <th>Carburant</th>
+            <th>Kilométrage</th>
+            <th>Assurance</th>
+            <th>État</th>
+            <th>Dispo</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (loading) {
+            <tr>
+              <td colspan="8" class="text-center">Chargement...</td>
+            </tr>
+          } @else {
+            @for (vehicule of paginatedVehicules; track vehicule.id) {
+              <tr>
+                <td><strong>{{ vehicule.matriculeFourni }}</strong></td>
+                <td>
+                  {{ vehicule.marque }} {{ vehicule.modele }}
+                  <div class="small text-muted">{{ vehicule.typeVehicule }}</div>
+                </td>
+                <td>{{ vehicule.carburant }}</td>
+                <td>{{ vehicule.kilometrage | number }} km</td>
+                <td>
+                  <span class="badge" [ngClass]="assuranceClass(vehicule.dateFinAssurance)">
+                    {{ assuranceLabel(vehicule.dateFinAssurance) }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="getEtatClass(vehicule.etat)">
+                    {{ vehicule.etat }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class.bg-success]="vehicule.vehiculeDispo" [class.bg-danger]="!vehicule.vehiculeDispo">
+                    {{ vehicule.vehiculeDispo ? 'Oui' : 'Non' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-info me-1" [routerLink]="['/vehicules/detail', vehicule.id]">Détails</button>
+                  <button class="btn btn-sm btn-warning me-1" [routerLink]="['/vehicules/edit', vehicule.id]">Modifier</button>
+                  <button class="btn btn-sm btn-danger" (click)="deleteVehicule(vehicule.id!)">Supprimer</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="8" class="text-center">Aucun véhicule trouvé</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    @if (totalItems > itemsPerPage) {
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <div>Affichage de {{ (currentPage-1)*itemsPerPage+1 }} à {{ currentPage*itemsPerPage > totalItems ? totalItems : currentPage*itemsPerPage }} sur {{ totalItems }} véhicules</div>
+        <div>
+          <button class="btn btn-sm btn-secondary" (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
+          <span class="mx-2">Page {{ currentPage }} / {{ totalPages }}</span>
+          <button class="btn btn-sm btn-secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">Suivant</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

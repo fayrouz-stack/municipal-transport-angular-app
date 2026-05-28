@@ -1,0 +1,46 @@
+<div class="container-fluid p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>📍 Gestion des Stations</h4>
+    <a routerLink="/stations/add" class="btn btn-primary">➕ Nouvelle station</a>
+  </div>
+
+  <div class="mb-3">
+    <input type="text" class="form-control w-auto" [(ngModel)]="search" (ngModelChange)="applyFilter()"
+           placeholder="Rechercher nom, ville, adresse..." />
+  </div>
+
+  <div *ngIf="loading" class="text-center py-4">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2 text-muted">Chargement...</p>
+  </div>
+
+  <div class="table-responsive" *ngIf="!loading">
+    <table class="table table-hover table-striped align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Nom</th>
+          <th>Adresse</th>
+          <th>Ville</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of filtered">
+          <td><span class="badge bg-secondary">{{ s.id }}</span></td>
+          <td><strong>{{ s.nom }}</strong></td>
+          <td class="text-muted">{{ s.adresse }}</td>
+          <td><span class="badge bg-info text-dark">{{ s.ville }}</span></td>
+          <td>
+            <button class="btn btn-sm btn-outline-warning me-1" (click)="edit(s.id)">✏️ Modifier</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="delete(s.id)">🗑️ Supprimer</button>
+          </td>
+        </tr>
+        <tr *ngIf="filtered.length === 0">
+          <td colspan="5" class="text-center text-muted py-3">Aucune station trouvée</td>
+        </tr>
+      </tbody>
+    </table>
+    <small class="text-muted">{{ filtered.length }} station(s)</small>
+  </div>
+</div>

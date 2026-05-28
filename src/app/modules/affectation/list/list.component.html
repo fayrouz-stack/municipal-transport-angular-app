@@ -1,0 +1,73 @@
+<c-card class="mb-4">
+  <c-card-header>
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Affectations chauffeurs / véhicules / lignes</h5>
+      <div>
+        <button cButton color="secondary" class="me-2" routerLink="/affectations/planning">
+          Vue planning
+        </button>
+        <button cButton color="primary" routerLink="/affectations/add">
+          Ajouter
+        </button>
+      </div>
+    </div>
+  </c-card-header>
+
+  <c-card-body>
+    <div class="row mb-4 g-3">
+      <div class="col-md-3">
+        <select class="form-control" [(ngModel)]="filterStatut" (change)="applyFilters()">
+          <option value="">Tous les statuts</option>
+          <option value="PLANIFIEE">Planifiée</option>
+          <option value="EN_COURS">En cours</option>
+          <option value="TERMINEE">Terminée</option>
+          <option value="ANNULEE">Annulée</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Chauffeur</th>
+          <th>Véhicule</th>
+          <th>Ligne</th>
+          <th>Début</th>
+          <th>Fin</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          @if (loading) {
+            <tr>
+              <td colspan="8" class="text-center">
+                <div class="spinner-border spinner-border-sm me-2"></div>Chargement...
+              </td>
+            </tr>
+          } @else {
+            @for (a of filtered; track a.id) {
+              <tr>
+                <td>{{ a.id }}</td>
+                <td>#{{ a.chauffeurId }}</td>
+                <td>#{{ a.vehiculeId }}</td>
+                <td>#{{ a.ligneId }}</td>
+                <td>{{ a.dateDebut | date:'short' }}</td>
+                <td>{{ a.dateFin | date:'short' }}</td>
+                <td><c-badge [color]="statutBadgeColor(a.statut)">{{ a.statut }}</c-badge></td>
+                <td>
+                  <button class="btn btn-sm btn-warning me-1" [routerLink]="['/affectations/edit', a.id]">Modifier</button>
+                  <button class="btn btn-sm btn-danger" (click)="deleteAffectation(a.id!)">Supprimer</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="8" class="text-center text-muted">Aucune affectation</td></tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </c-card-body>
+</c-card>

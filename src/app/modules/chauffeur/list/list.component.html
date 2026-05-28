@@ -1,0 +1,85 @@
+<c-card class="mb-4">
+  <c-card-header>
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Gestion des chauffeurs</h5>
+      <button cButton color="primary" routerLink="/chauffeurs/add">
+        Ajouter un chauffeur
+      </button>
+    </div>
+  </c-card-header>
+
+  <c-card-body>
+    <!-- Filtres -->
+    <div class="row mb-4 g-3">
+      <div class="col-md-6">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Rechercher par CIN, nom, prénom..."
+          [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
+        />
+      </div>
+      <div class="col-md-2">
+        <button cButton color="secondary" (click)="resetFilters()">Réinitialiser</button>
+      </div>
+    </div>
+
+    <!-- Tableau -->
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+          <th>CIN</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Permis</th>
+          <th>Téléphone</th>
+          <th>Email</th>
+          <th>Matricule</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          @if (loading) {
+            <tr>
+              <td colspan="8" class="text-center">
+                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                Chargement...
+              </td>
+            </tr>
+          } @else {
+            @for (chauffeur of paginatedChauffeurs; track chauffeur.id) {
+              <tr>
+                <td>{{ chauffeur.cin }}</td>
+                <td>{{ chauffeur.nom }}</td>
+                <td>{{ chauffeur.prenom }}</td>
+                <td>{{ chauffeur.permis }}</td>
+                <td>{{ chauffeur.telephone }}</td>
+                <td>{{ chauffeur.email }}</td>
+                <td>{{ chauffeur.matricule }}</td>
+                <td>
+                  <button class="btn btn-sm btn-info me-1" [routerLink]="['/chauffeurs', chauffeur.id]" cTooltip="Détails">
+                    Détails
+                  </button>
+                  <button class="btn btn-sm btn-warning me-1" [routerLink]="['/chauffeurs/edit', chauffeur.id]" cTooltip="Modifier">
+                    Modifier
+                  </button>
+                  <button class="btn btn-sm btn-danger" (click)="deleteChauffeur(chauffeur.id!)" cTooltip="Supprimer">
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="8" class="text-center text-muted">
+                  Aucun chauffeur trouvé
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </c-card-body>
+</c-card>

@@ -1,0 +1,81 @@
+<c-card>
+  <c-card-header>
+    <h5>Modifier le véhicule</h5>
+  </c-card-header>
+  <c-card-body>
+    <form [formGroup]="vehiculeForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label>Matricule *</label>
+          <input type="text" class="form-control" formControlName="matriculeFourni">
+          <div class="text-danger" *ngIf="f['matriculeFourni']?.invalid && f['matriculeFourni']?.touched">
+            Le matricule est requis
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Marque *</label>
+          <input type="text" class="form-control" formControlName="marque">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Modèle</label>
+          <input type="text" class="form-control" formControlName="modele">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Type *</label>
+          <select class="form-select" formControlName="typeVehicule">
+            <option value="Voiture">Voiture</option>
+            <option value="Bus">Bus</option>
+            <option value="Minibus">Minibus</option>
+            <option value="Camion">Camion</option>
+            <option value="Utilitaire">Utilitaire</option>
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Carburant *</label>
+          <select class="form-select" formControlName="carburant">
+            <option value="Essence">Essence</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Électrique">Électrique</option>
+            <option value="Hybride">Hybride</option>
+            <option value="GPL">GPL</option>
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>État</label>
+          <select class="form-select" formControlName="etat">
+            <option value="disponible">Disponible</option>
+            <option value="en service">En service</option>
+            <option value="en panne">En panne</option>
+            <option value="bon état">Bon état</option>
+            <option value="neuf">Neuf</option>
+            <option value="usé">Usé</option>
+            <option value="en réparation">En réparation</option>
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Kilométrage</label>
+          <input type="number" class="form-control" formControlName="kilometrage">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Localisation</label>
+          <input type="text" class="form-control" formControlName="localisation">
+        </div>
+        <div class="col-md-12 mb-3">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" formControlName="vehiculeDispo">
+            <label class="form-check-label">Véhicule disponible</label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-3">
+        <button cButton color="primary" type="submit" [disabled]="submitting">
+          {{ submitting ? 'Enregistrement...' : 'Enregistrer' }}
+        </button>
+        <button cButton color="secondary" type="button" routerLink="/vehicules/list" class="ms-2">
+          Annuler
+        </button>
+      </div>
+    </form>
+  </c-card-body>
+</c-card>

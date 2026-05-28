@@ -1,0 +1,37 @@
+<c-card class="mb-4" *ngIf="!loading && ticket">
+  <c-card-header>
+    <h5>Détails du ticket {{ ticket.numero }}</h5>
+  </c-card-header>
+  <c-card-body>
+    <div class="row">
+      <div class="col-md-6"><strong>Numéro :</strong> {{ ticket.numero }}</div>
+      <div class="col-md-6"><strong>Statut :</strong> {{ ticket.statut }}</div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-md-6"><strong>Voyage :</strong> #{{ ticket.voyageId }}</div>
+      <div class="col-md-6"><strong>Date création :</strong> {{ ticket.dateCreation | date:'medium' }}</div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-md-6"><strong>Passager :</strong> {{ ticket.passagerNom }}</div>
+      <div class="col-md-6"><strong>Email :</strong> {{ ticket.passagerEmail || '-' }}</div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-md-4"><strong>Nb billets :</strong> {{ ticket.nombreBillets }}</div>
+      <div class="col-md-4"><strong>Montant :</strong> {{ ticket.montantTotal | number:'1.2-2' }} DT</div>
+      <div class="col-md-4"><strong>Méthode :</strong> {{ ticket.methodePaiement }}</div>
+    </div>
+    <hr />
+    <button class="btn btn-secondary me-2" routerLink="/tickets">Retour</button>
+    <button class="btn btn-warning" [routerLink]="['/tickets/edit', ticket.id]">Modifier</button>
+  </c-card-body>
+</c-card>
+
+<div *ngIf="loading" class="text-center">
+  <div class="spinner-border" role="status"></div>
+  Chargement...
+</div>
+
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>

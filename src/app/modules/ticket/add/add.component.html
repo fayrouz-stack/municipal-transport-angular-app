@@ -1,0 +1,59 @@
+<h2 class="mb-3">Ajouter un ticket</h2>
+
+<form #form="ngForm" (ngSubmit)="save(form)" novalidate>
+
+  <div class="mb-3">
+    <label>ID Voyage *</label>
+    <input class="form-control" type="number" name="voyageId" [(ngModel)]="ticket.voyageId" required min="1" />
+    <small class="text-danger" *ngIf="form.submitted && form.controls['voyageId']?.invalid">
+      ID voyage requis (entier &gt; 0)
+    </small>
+  </div>
+
+  <div class="mb-3">
+    <label>Passager (nom) *</label>
+    <input class="form-control" name="passagerNom" [(ngModel)]="ticket.passagerNom" required />
+    <small class="text-danger" *ngIf="form.submitted && form.controls['passagerNom']?.invalid">
+      Nom passager requis
+    </small>
+  </div>
+
+  <div class="mb-3">
+    <label>Email passager</label>
+    <input class="form-control" type="email" name="passagerEmail" [(ngModel)]="ticket.passagerEmail" />
+  </div>
+
+  <div class="mb-3">
+    <label>Nombre de billets *</label>
+    <input class="form-control" type="number" name="nombreBillets" [(ngModel)]="ticket.nombreBillets" required min="1" />
+  </div>
+
+  <div class="mb-3">
+    <label>Montant total (DT) *</label>
+    <input class="form-control" type="number" step="0.01" name="montantTotal" [(ngModel)]="ticket.montantTotal" required min="0" />
+  </div>
+
+  <div class="mb-3">
+    <label>Méthode de paiement *</label>
+    <select class="form-control" name="methodePaiement" [(ngModel)]="ticket.methodePaiement" required>
+      <option value="Espèces">Espèces</option>
+      <option value="Carte">Carte bancaire</option>
+      <option value="Stripe">Stripe</option>
+      <option value="PayPal">PayPal</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Statut</label>
+    <select class="form-control" name="statut" [(ngModel)]="ticket.statut">
+      <option value="PAYE">Payé</option>
+      <option value="EN_ATTENTE">En attente</option>
+      <option value="ANNULE">Annulé</option>
+    </select>
+  </div>
+
+  <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
+    <span *ngIf="loading">Loading...</span>
+    <span *ngIf="!loading">Enregistrer</span>
+  </button>
+</form>

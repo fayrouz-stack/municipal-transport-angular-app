@@ -1,0 +1,19 @@
+<div class="container p-4" style="max-width:600px">
+  <h4>{{ isEdit ? '✏️ Modifier' : '➕ Nouvelle' }} ligne</h4>
+  <form (ngSubmit)="save()" #f="ngForm">
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Numéro de ligne</label>
+      <input type="text" class="form-control" [(ngModel)]="ligne.numero" name="numero"
+             required placeholder="Ex: 101" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Destination</label>
+      <input type="text" class="form-control" [(ngModel)]="ligne.destination" name="destination"
+             required placeholder="Ex: Tunis - Sousse" />
+    </div>
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Enregistrer</button>
+      <a routerLink="/lignes" class="btn btn-secondary">Annuler</a>
+    </div>
+  </form>
+</div>

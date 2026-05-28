@@ -1,0 +1,37 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Détails du véhicule</h5>
+  </div>
+  <div class="card-body">
+    @if (loading) {
+      <div class="text-center">Chargement...</div>
+    } @else if (vehicule) {
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table table-bordered">
+            <tr><th>Matricule</th><td>{{ vehicule.matriculeFourni }}</td></tr>
+            <tr><th>Marque</th><td>{{ vehicule.marque }}</td></tr>
+            <tr><th>Modèle</th><td>{{ vehicule.modele }}</td></tr>
+            <tr><th>Type véhicule</th><td>{{ vehicule.typeVehicule }}</td></tr>
+            <tr><th>Carburant</th><td>{{ vehicule.carburant }}</td></tr>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table class="table table-bordered">
+            <tr><th>État</th><td><span class="badge" [class.bg-success]="vehicule.etat === 'disponible'">{{ vehicule.etat }}</span></td></tr>
+            <tr><th>Disponible</th><td>{{ vehicule.vehiculeDispo ? 'Oui' : 'Non' }}</td></tr>
+            <tr><th>Kilométrage</th><td>{{ vehicule.kilometrage | number }} km</td></tr>
+            <tr><th>Localisation</th><td>{{ vehicule.localisation || '-' }}</td></tr>
+            <tr><th>Date fin assurance</th><td [class]="dateClass(vehicule.dateFinAssurance)">{{ dateLabel(vehicule.dateFinAssurance) }}</td></tr>
+            <tr><th>Date prochain CT</th><td [class]="dateClass(vehicule.dateProchainCt)">{{ dateLabel(vehicule.dateProchainCt) }}</td></tr>
+            <tr><th>Date 1ère mise circulation</th><td>{{ vehicule.datePremiereMiseCirculation | date:'dd/MM/yyyy' }}</td></tr>
+            <tr><th>Date validité exploitation</th><td [class]="dateClass(vehicule.dateValiditeExploitation)">{{ dateLabel(vehicule.dateValiditeExploitation) }}</td></tr>
+          </table>
+        </div>
+      </div>
+    }
+    <div class="mt-3">
+      <button class="btn btn-secondary" (click)="goBack()">Retour</button>
+    </div>
+  </div>
+</div>
